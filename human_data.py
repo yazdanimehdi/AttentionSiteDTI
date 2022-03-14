@@ -82,7 +82,7 @@ def process_protein(pdb_file):
         ami = am[np.array(idxs)[:, None], np.array(idxs)]
         H = get_atom_feature(binding_parts_atoms)
         g = nx.convert_matrix.from_numpy_matrix(ami)
-        graph = dgl.DGLGraph(g)
+        graph = dgl.from_networkx(g)
         graph.ndata['h'] = torch.Tensor(H)
         graph = dgl.add_self_loop(graph)
         constructed_graphs.append(graph)
@@ -90,16 +90,6 @@ def process_protein(pdb_file):
 
     constructed_graphs = dgl.batch(constructed_graphs)
 
-    # amj = am[np.array(not_in_binding)[:, None], np.array(not_in_binding)]
-    # not_binding_atoms = []
-    # for item in not_in_binding:
-    #     not_binding_atoms.append((m.GetAtoms()[item], d2[item]))
-    # H = get_atom_feature(not_binding_atoms)
-    # g = nx.convert_matrix.from_numpy_matrix(amj)
-    # graph = dgl.DGLGraph(g)
-    # graph.ndata['h'] = torch.Tensor(H)
-    # graph = dgl.add_self_loop(graph)
-    # constructed_graphs = dgl.batch([constructed_graphs, graph])
     return binding_parts, not_in_binding, constructed_graphs
 
 
@@ -108,14 +98,13 @@ node_featurizer = CanonicalAtomFeaturizer(atom_data_field='h')
 zero = np.eye(2)[1]
 one = np.eye(2)[0]
 
-df = pd.read_csv("humanSeqPdb.txt")
+df = pd.read_csv("humanSeqPdb")
 print(len(df['pdb_id'].unique()))
 
-with open("data.txt", 'r') as fp:
+with open("human_data.txt", 'r') as fp:
     train_raw = fp.read()
-train_set = []
+save_set = []
 
-previous_pdb = ""
 constructed_graphs = ""
 raw_data = train_raw.split("\n")
 random.shuffle(raw_data)
@@ -124,6 +113,8 @@ raw_data_valid = raw_data[int(len(raw_data)*0.8): int(len(raw_data)*0.9)]
 raw_data_test = raw_data[int(len(raw_data)*0.9): int(len(raw_data))]
 del raw_data
 i = 1
+
+p_graphs = {}
 
 for item in raw_data_train:
     print(i)
@@ -134,7 +125,7 @@ for item in raw_data_train:
         sequence = a[1]
         pdb_code = df.loc[df["sequence"] == sequence]["pdb_id"].item()[:-1]
         if pdb_code != "6g5i" and pdb_code != "5t0j" and pdb_code != "5wve":
-            if previous_pdb != pdb_code:
+            if pdb_code not in p_graphs.keys():
                 pdbl = PDBList()
                 pdbl.retrieve_pdb_file(
                     pdb_code, pdir='./pdbs/', overwrite=True, file_format="pdb"
@@ -148,24 +139,27 @@ for item in raw_data_train:
                 #print(f"Downloaded PDB file for: {pdb_code}")
                 _, _, constructed_graphs = process_protein(f"./pdbs/{pdb_code}.pdb")
 
-                previous_pdb = pdb_code
+                p_graphs[pdb_code] = constructed_graphs
+            else:
+                constructed_graphs = p_graphs[pdb_code]
 
             g = smiles_to_bigraph(smile, node_featurizer=node_featurizer)
             g = dgl.add_self_loop(g)
             if a[2] == "1":
-                train_set.append(((constructed_graphs, g), one))
+                save_set.append(((constructed_graphs, g), one))
             else:
-                train_set.append((((constructed_graphs, g), zero)))
+                save_set.append((((constructed_graphs, g), zero)))
     except Exception as e:
         print(e)
         continue
 
 
 with open(f'human_part_train.pkl', 'wb') as f:
-    pickle.dump(train_set, f)
+    pickle.dump(save_set, f)
 
-train_set = []
+save_set = []
 i = 1
+
 for item in raw_data_test:
     print(i)
     i += 1
@@ -175,7 +169,7 @@ for item in raw_data_test:
         sequence = a[1]
         pdb_code = df.loc[df["sequence"] == sequence]["pdb_id"].item()[:-1]
         if pdb_code != "6g5i" and pdb_code != "5t0j" and pdb_code != "5wve":
-            if previous_pdb != pdb_code:
+            if pdb_code not in p_graphs.keys():
                 pdbl = PDBList()
                 pdbl.retrieve_pdb_file(
                     pdb_code, pdir='./pdbs/', overwrite=True, file_format="pdb"
@@ -189,23 +183,25 @@ for item in raw_data_test:
                 # print(f"Downloaded PDB file for: {pdb_code}")
                 _, _, constructed_graphs = process_protein(f"./pdbs/{pdb_code}.pdb")
 
-                previous_pdb = pdb_code
+                p_graphs[pdb_code] = constructed_graphs
+            else:
+                constructed_graphs = p_graphs[pdb_code]
 
             g = smiles_to_bigraph(smile, node_featurizer=node_featurizer)
             g = dgl.add_self_loop(g)
             if a[2] == "1":
-                train_set.append(((constructed_graphs, g), one))
+                save_set.append(((constructed_graphs, g), one))
             else:
-                train_set.append((((constructed_graphs, g), zero)))
+                save_set.append((((constructed_graphs, g), zero)))
     except Exception as e:
         print(e)
         continue
 
 with open(f'human_part_test.pkl', 'wb') as f:
-    pickle.dump(train_set, f)
+    pickle.dump(save_set, f)
 
 
-train_set = []
+save_set = []
 i = 1
 for item in raw_data_valid:
     print(i)
@@ -216,7 +212,7 @@ for item in raw_data_valid:
         sequence = a[1]
         pdb_code = df.loc[df["sequence"] == sequence]["pdb_id"].item()[:-1]
         if pdb_code != "6g5i" and pdb_code != "5t0j" and pdb_code != "5wve":
-            if previous_pdb != pdb_code:
+            if pdb_code not in p_graphs.keys():
                 pdbl = PDBList()
                 pdbl.retrieve_pdb_file(
                     pdb_code, pdir='./pdbs/', overwrite=True, file_format="pdb"
@@ -230,24 +226,19 @@ for item in raw_data_valid:
                 # print(f"Downloaded PDB file for: {pdb_code}")
                 _, _, constructed_graphs = process_protein(f"./pdbs/{pdb_code}.pdb")
 
-                previous_pdb = pdb_code
+                p_graphs[pdb_code] = constructed_graphs
+            else:
+                constructed_graphs = p_graphs[pdb_code]
 
             g = smiles_to_bigraph(smile, node_featurizer=node_featurizer)
             g = dgl.add_self_loop(g)
             if a[2] == "1":
-                train_set.append(((constructed_graphs, g), one))
+                save_set.append(((constructed_graphs, g), one))
             else:
-                train_set.append((((constructed_graphs, g), zero)))
+                save_set.append((((constructed_graphs, g), zero)))
     except Exception as e:
         print(e)
         continue
 
 with open(f'human_part_val.pkl', 'wb') as f:
-    pickle.dump(train_set, f)
-# print('Num train keys: ', counter)
-# print('Num actual train keys: ', len(train_keys))
-#
-
-# with open('train_dude_all_decoy.pkl', 'wb') as f:
-#     pickle.dump(inactive, f)
-#
+    pickle.dump(save_set, f)
