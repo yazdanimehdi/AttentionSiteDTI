@@ -8,7 +8,7 @@ https://www.biorxiv.org/content/10.1101/2021.12.07.471693v2
 A suitable [conda](https://conda.io/) environment can be created
 and activated with:
 ```
-conda env create -f attentionsite.yaml
+conda env create -f attentionsite.yml
 conda activate taming
 ```
 ## Data
