@@ -2,7 +2,7 @@
 This is The repository for supporting matterial of "Interpretable and Generalizable Attention-Based Model for Predicting Drug-Target Interaction Using 3D Structure of Protein Binding Sites: SARS-CoV-2 Case Study and in-Lab Validation"
 https://www.biorxiv.org/content/10.1101/2021.12.07.471693v2
 
-![AttentionSiteDTI](Image/AttentionSiteDTI.png)
+![AttentionSiteDTI](AttentionSiteDTI.png)
 
 ## Requirements
 A suitable [conda](https://conda.io/) environment can be created
