@@ -5,11 +5,9 @@ https://www.biorxiv.org/content/10.1101/2021.12.07.471693v2
 ![AttentionSiteDTI](AttentionSiteDTI.png)
 
 ## Requirements
-A suitable [conda](https://conda.io/) environment can be created
-and activated with:
+A suitable [conda](https://conda.io/) environment can be created:
 ```
 conda env create -f attentionsite.yml
-conda activate taming
 ```
 ## Data
 All data used in this paper are publicly available and can be accessed here: [DUD-E](http://dude.docking.org ), [BindingDB-IBM dataset](https://github.com/IBM/InterpretableDTIP), [Human dataset](https://github.com/masashitsubaki/CPI_prediction/tree/master/dataset) and [human sequence to pdb](https://github.com/prokia/drugVQA/tree/master/data)
