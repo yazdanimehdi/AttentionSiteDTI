@@ -48,7 +48,7 @@ print("load_done")
 #random_selector = np.random.randint(len(inactive) - len(active))
 #a = int(len(inactive) / (len(active)))
 #ds = active + inactive
-with open("a.pkl", 'rb') as fp:
+with open("human_part_train.pkl", 'rb') as fp:
     ds = pickle.load(fp)
 
 random.shuffle(ds)
@@ -69,13 +69,13 @@ y = [i[1][0] for i in ds]
 #
 #ds_test = active + inactive
 #random.shuffle(ds_test)
-with open("b.pkl", 'rb') as fp:
+with open("human_part_test.pkl", 'rb') as fp:
     ds_test = pickle.load(fp)
 #
 X_test = [i[0] for i in ds_test]
 y_test = [i[1][0] for i in ds_test]
 
-with open("c.pkl", 'rb') as fp:
+with open("human_part_val.pkl", 'rb') as fp:
     ds_val = pickle.load(fp)
 
 X_val = [i[0] for i in ds_val]
