@@ -1,6 +1,6 @@
 # AttentionSiteDTI
-This is The repository for supporting matterial of "Interpretable and Generalizable Attention-Based Model for Predicting Drug-Target Interaction Using 3D Structure of Protein Binding Sites: SARS-CoV-2 Case Study and in-Lab Validation"
-https://www.biorxiv.org/content/10.1101/2021.12.07.471693v2
+This is The repository for supporting matterial of "AttentionSiteDTI: an interpretable graph-based model for drug-target interaction prediction using NLP sentence-level relation classification"
+https://academic.oup.com/bib/advance-article/doi/10.1093/bib/bbac272/6640006
 
 ![AttentionSiteDTI](AttentionSiteDTI.png)
 
