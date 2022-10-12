@@ -5,12 +5,8 @@ import pickle
 import random
 import numpy as np
 import time
-from model_abiliation import DTIModelWithoutBatching as TWIRLS
 from model_abiliation import DTITAG
-
 from torch.optim.lr_scheduler import ExponentialLR
-
-from model import DTIModelWithoutBatching, DTIModelWithoutProteinSequence, DTIModel, RMDL
 from tqdm import tqdm
 from dgl import batch, unbatch
 from sklearn.metrics import balanced_accuracy_score, roc_auc_score, precision_recall_curve, \
