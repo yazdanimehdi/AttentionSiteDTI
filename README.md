@@ -1,4 +1,4 @@
-## This repository is depricated! Please visit ![DeepDrugDomain Package](https://github.com/yazdanimehdi/deepdrugdomain).
+## This repository is depricated! Please visit [DeepDrugDomain Package](https://github.com/yazdanimehdi/deepdrugdomain).
 # AttentionSiteDTI
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/attentionsitedti-an-interpretable-graph-based/drug-discovery-on-bindingdb)](https://paperswithcode.com/sota/drug-discovery-on-bindingdb?p=attentionsitedti-an-interpretable-graph-based)
 
