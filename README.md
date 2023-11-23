@@ -35,12 +35,26 @@ After generating the human_part_train.pkl, human_part_val.pkl and human_part_tes
 python main2.py
 ```
 # Cite
-If you find this repo to be useful, please cite our paper. Thank you.
+If you find this repo to be useful, please cite our papers. Thank you.
 ```
 @article{yazdani2022attentionsitedti,
   title={AttentionSiteDTI: an interpretable graph-based model for drug-target interaction prediction using NLP sentence-level relation classification},
   author={Yazdani-Jahromi, Mehdi and Yousefi, Niloofar and Tayebi, Aida and Kolanthai, Elayaraja and Neal, Craig J and Seal, Sudipta and Garibay, Ozlem Ozmen},
   journal={Briefings in Bioinformatics}
+}
+@article{10.1093/bib/bbad136,
+    author = {Yousefi, Niloofar and Yazdani-Jahromi, Mehdi and Tayebi, Aida and Kolanthai, Elayaraja and Neal, Craig J and Banerjee, Tanumoy and Gosai, Agnivo and Balasubramanian, Ganesh and Seal, Sudipta and Ozmen Garibay, Ozlem},
+    title = "{BindingSite-AugmentedDTA: enabling a next-generation pipeline for interpretable prediction models in drug repurposing}",
+    journal = {Briefings in Bioinformatics},
+    volume = {24},
+    number = {3},
+    pages = {bbad136},
+    year = {2023},
+    month = {04},
+    issn = {1477-4054},
+    doi = {10.1093/bib/bbad136},
+    url = {https://doi.org/10.1093/bib/bbad136},
+    eprint = {https://academic.oup.com/bib/article-pdf/24/3/bbad136/50410278/bbad136.pdf},
 }
 ```
 
